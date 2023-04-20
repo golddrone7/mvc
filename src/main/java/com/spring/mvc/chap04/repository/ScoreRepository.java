@@ -14,6 +14,11 @@ public interface ScoreRepository {
     // 성적 정보 전체 목록 조회
     List<Score> findAll();
 
+//    실무적으로는 인터페이스를 설계하면 다 추가해야 되기 때문에
+    // default 인터페이스를 사용하자
+    // 그럼 오버라이딩 강제를 방지할 수 있음, 사이드 이펙트 방지
+    default List<Score> findSortName(){return null;}
+    default List<Score> findSortAvg(){return null;}
     // 성적 정보 등록
     boolean save(Score score);
 
@@ -22,6 +27,7 @@ public interface ScoreRepository {
 
     // 성적 정보 개별 조회
     Score findByStuNum(int stuNum);
+
 
 
 }

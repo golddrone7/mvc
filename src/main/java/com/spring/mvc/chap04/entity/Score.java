@@ -26,7 +26,7 @@ public class Score {
         calcGrade(); // 학점 계산
     }
 
-    private void calcGrade() {
+    public void calcGrade() {
         if(average>=90){
             this.grade = Grade.A;
         } else if(average>=80) {
@@ -40,7 +40,7 @@ public class Score {
         }
     }
 
-    private void calcTotalAndAvg() {
+    public void calcTotalAndAvg() {
         this.total = kor + eng + math;
         this.average = total / 3.0;
     }

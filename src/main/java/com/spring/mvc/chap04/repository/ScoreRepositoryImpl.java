@@ -26,9 +26,9 @@ public class ScoreRepositoryImpl implements ScoreRepository{
 
     static {
         scoreMap = new HashMap<>();
-        Score stu1 = new Score("뽀로로", 100, 50, 70, ++sequence, 0, 0, A);
-        Score stu2 = new Score("춘식이", 33, 56, 12, ++sequence, 0, 0, A);
-        Score stu3 = new Score("대길이", 88, 12, 0, ++sequence, 0, 0, A);
+        Score stu1 = new Score("뽀로로", 100, 50, 70, ++sequence, 220, 73, C);
+        Score stu2 = new Score("춘식이", 33, 56, 12, ++sequence, 101, 33.33, F);
+        Score stu3 = new Score("대길이", 88, 12, 0, ++sequence, 0, 33.33, F);
 
         scoreMap.put(stu1.getStuNum(), stu1);
         scoreMap.put(stu2.getStuNum(), stu2);
@@ -43,6 +43,25 @@ public class ScoreRepositoryImpl implements ScoreRepository{
                 .sorted(comparing(Score::getStuNum))
                 .collect(toList());
     }
+
+
+    // 이름순
+    public List<Score> findSortName() {
+        return scoreMap.values()
+                .stream()
+                .sorted(comparing(Score::getName))
+                .collect(toList());
+    }
+    // 평균순
+    public List<Score> findSortAvg() {
+        return scoreMap.values()
+                .stream()
+                .sorted(comparing(Score::getAverage).reversed())
+                .collect(toList());
+    }
+
+
+
     @Override
     public boolean save(Score score) {
         if(scoreMap.containsKey(score.getStuNum())){ // 학번이 이미 포함되어있으면 false

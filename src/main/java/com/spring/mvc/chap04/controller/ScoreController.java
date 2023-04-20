@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -51,12 +52,18 @@ public class ScoreController {
 
     // 성적등록화면 띄우기 + 정보목록조회
     @GetMapping("/list")
-    public String list(Model model){
+    public String list(@RequestParam(defaultValue = "num") String type, Model model){
         System.out.println("/score/list : GET!");
-        List<Score> scoreList = repository.findAll();
+        List<Score> scoreList;
+        if(type.equals("num")) scoreList = repository.findAll();
+        else if(type.equals("name")) scoreList = repository.findSortName();
+        else if(type.equals("avg")) scoreList = repository.findSortAvg();
+        else scoreList = null;
+
         model.addAttribute("sList", scoreList);
         return "chap04/score-list";
     }
+
 
     // 컴팩트하게 만들음 entity랑 DTO의 차이를 확인하자
     // DTO 를 따로 만듬
@@ -88,21 +95,40 @@ public class ScoreController {
     }
 
     // 3. 성적정보 삭제 요청
-    @PostMapping("/remove")
-    public String remove(){
-        System.out.println("/score/remove : POST");
-        return "";
+    @GetMapping("/remove")
+    public String remove(int stuNum){
+        System.out.println("/score/remove : GET");
+        repository.deleteByStuNum(stuNum);
+
+        return "redirect:/score/list";
     }
 
     // 4. 성적정보 삭제 조회 요청
     @GetMapping("/detail")
-    public String detail(){
+    public String detail(int stuNum, Model model){
         System.out.println("/score/detail : GET!");
-        return "";
+        Score score = repository.findByStuNum(stuNum);
+        model.addAttribute("score", score);
+        return "chap04/score-detail";
     }
 
-
-
-
-
+    @GetMapping("/modify")
+    public String modify(int stuNum, Model model){
+        System.out.println("/score/modify : GET!");
+        Score score = repository.findByStuNum(stuNum);
+        model.addAttribute("s", score);
+        return "chap04/score-detail-modify";
+    }
+    @PostMapping("/modifyComplete")
+    public String modifyComplete(int stuNum ,ScoreRequestDTO dto, Model model){
+        System.out.println("/score/modifyComplete : POST!");
+        Score score = repository.findByStuNum(stuNum);
+        score.setMath(dto.getMath());
+        score.setKor(dto.getKor());
+        score.setEng(dto.getEng());
+        score.calcTotalAndAvg();
+        score.calcGrade();
+        model.addAttribute("score", score);
+        return "chap04/score-detail";
+    }
 }
