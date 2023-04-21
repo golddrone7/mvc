@@ -19,11 +19,7 @@ public class Score {
 
     public Score(ScoreRequestDTO dto) {
         this.name = dto.getName();
-        this.kor = dto.getKor();
-        this.eng = dto.getEng();
-        this.math = dto.getMath();
-        calcTotalAndAvg(); // 총점, 평균 계산
-        calcGrade(); // 학점 계산
+        changeScore(dto);
     }
 
     public void calcGrade() {
@@ -43,5 +39,14 @@ public class Score {
     public void calcTotalAndAvg() {
         this.total = kor + eng + math;
         this.average = total / 3.0;
+    }
+
+    // 캡슐화
+    public void changeScore(ScoreRequestDTO dto) {
+        this.math = dto.getMath();
+        this.kor = dto.getKor();
+        this.eng = dto.getEng();
+        calcTotalAndAvg(); // 총점, 평균 계산
+        calcGrade(); // 학점 계산
     }
 }

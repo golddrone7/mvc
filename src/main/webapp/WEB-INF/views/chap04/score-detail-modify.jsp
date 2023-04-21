@@ -58,7 +58,7 @@
     <div class="wrap">
         <section class="score-main">
             <h1>${s.name}님 성적 정보 수정하기~</h1>
-            <form action="/score/modifyComplete" method="post">
+            <form action="/score/modify" method="post">
                 <input type="hidden" name="stuNum" value="${s.stuNum}">
                 <ul>
                     <li># 국어: <input type="text" name="kor" value="${s.kor}"></li>
@@ -67,6 +67,7 @@
                 </ul>
                 <div class="btn-group">
                     <button type="submit">수정완료</button>
+                    <button type="button" onclick="history.back()">이전으로</button>
                 </div>
             </form>
         </section>

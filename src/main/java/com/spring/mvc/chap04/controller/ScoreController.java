@@ -1,12 +1,11 @@
 package com.spring.mvc.chap04.controller;
 
+import com.spring.mvc.chap04.dto.ScoreListResponseDTO;
 import com.spring.mvc.chap04.dto.ScoreRequestDTO;
 import com.spring.mvc.chap04.entity.Score;
 import com.spring.mvc.chap04.repository.ScoreRepository;
-import com.spring.mvc.chap04.repository.ScoreRepositoryImpl;
-import lombok.AllArgsConstructor;
+import com.spring.mvc.chap04.service.ScoreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /*
@@ -39,8 +40,8 @@ import java.util.List;
 public class ScoreController {
 
     // 저장소에 의존해야 데이터를 받아서 클라이언트에게 응답할 수 있음
-    private final ScoreRepository repository;
-
+//    private final ScoreRepository repository;
+    private final ScoreService scoreService;
     // 만약에 클래스의 생성자가 단 1개라면
     // 자동으로 @Autowired를 써줌
 
@@ -54,13 +55,9 @@ public class ScoreController {
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "num") String type, Model model){
         System.out.println("/score/list : GET!");
-        List<Score> scoreList;
-        if(type.equals("num")) scoreList = repository.findAll();
-        else if(type.equals("name")) scoreList = repository.findSortName();
-        else if(type.equals("avg")) scoreList = repository.findSortAvg();
-        else scoreList = null;
+        List<ScoreListResponseDTO> responseDTOList = scoreService.getList(type);
 
-        model.addAttribute("sList", scoreList);
+        model.addAttribute("sList", responseDTOList);
         return "chap04/score-list";
     }
 
@@ -75,9 +72,8 @@ public class ScoreController {
         // 입력데이터(쿼리스트링) 읽기
         System.out.println("/score/register : POST! - " + dto);
         // dto(ScoreDTO)를 entity(Score)로 변환해야함.
-        Score score = new Score(dto);
-        // save 명령
-        repository.save(score);
+        scoreService.insertScore(dto);
+
 
         // 리다이렉트 : 다시 호출하는 개념
 
@@ -98,16 +94,15 @@ public class ScoreController {
     @GetMapping("/remove")
     public String remove(int stuNum){
         System.out.println("/score/remove : GET");
-        repository.deleteByStuNum(stuNum);
-
+        scoreService.delete(stuNum);
         return "redirect:/score/list";
     }
 
     // 4. 성적정보 삭제 조회 요청
     @GetMapping("/detail")
-    public String detail(int stuNum, Model model){
+    public String detail(@RequestParam(required = true) int stuNum, Model model){
         System.out.println("/score/detail : GET!");
-        Score score = repository.findByStuNum(stuNum);
+        Score score = scoreService.retrieve(stuNum);
         model.addAttribute("score", score);
         return "chap04/score-detail";
     }
@@ -115,20 +110,22 @@ public class ScoreController {
     @GetMapping("/modify")
     public String modify(int stuNum, Model model){
         System.out.println("/score/modify : GET!");
-        Score score = repository.findByStuNum(stuNum);
+        Score score = scoreService.retrieve(stuNum);
         model.addAttribute("s", score);
         return "chap04/score-detail-modify";
     }
-    @PostMapping("/modifyComplete")
-    public String modifyComplete(int stuNum ,ScoreRequestDTO dto, Model model){
+    @PostMapping("/modify")
+    public String modifyComplete(int stuNum ,ScoreRequestDTO dto){
         System.out.println("/score/modifyComplete : POST!");
-        Score score = repository.findByStuNum(stuNum);
-        score.setMath(dto.getMath());
-        score.setKor(dto.getKor());
-        score.setEng(dto.getEng());
-        score.calcTotalAndAvg();
-        score.calcGrade();
-        model.addAttribute("score", score);
-        return "chap04/score-detail";
+        Score score = scoreService.retrieve(stuNum);
+        score.changeScore(dto);
+//        score.setMath(dto.getMath());
+//        score.setKor(dto.getKor());
+//        score.setEng(dto.getEng());
+//        score.calcTotalAndAvg();
+//        score.calcGrade();  캡슐화를 해야하는 이유, 학점을 먼저 계산하면 신경쓸게 많음. 즉 순서를 적어줘야함
+//        model.addAttribute("score", score);
+        return "redirect:/score/detail?stuNum="+score.getStuNum();
+//        return "chap04/score-detail";
     }
 }
