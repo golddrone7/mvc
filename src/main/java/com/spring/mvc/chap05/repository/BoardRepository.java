@@ -1,6 +1,5 @@
 package com.spring.mvc.chap05.repository;
 
-
 import com.spring.mvc.chap05.entity.Board;
 
 import java.util.List;
@@ -18,21 +17,5 @@ public interface BoardRepository {
 
     // 게시물 삭제
     boolean deleteByNo(int boardNo);
-
-    default void save(String title, String content) {
-
-    }
-
-
-
-    ////////////////////////
-    // 조회수 상승
-
-    // 수정 기능
-
-    // 정렬 기능
-
-    // 검색 기능
-
 
 }

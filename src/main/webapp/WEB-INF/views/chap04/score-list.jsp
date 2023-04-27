@@ -14,6 +14,7 @@
     <!-- bootstrap css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
@@ -24,18 +25,15 @@
         label {
             display: block;
         }
-
         .score-list>li {
             margin-bottom: 10px;
         }
-
         .score-list>li:first-child {
             font-size: 1.2em;
             color: blue;
             font-weight: 700;
             border-bottom: 1px solid skyblue;
         }
-
         .del-btn {
             width: 10px;
             height: 10px;
@@ -47,30 +45,24 @@
             font-size: 0.7em;
             padding: 6px;
         }
-
         .del-btn:hover {
             background: orangered;
         }
-
         section.score {
             padding: 200px 50px 100px;
             font-size: 1.5em;
         }
-
         .list-header {
             display: flex;
             justify-content: space-between;
-
             width: 50%;
         }
         .list-header .sort-link-group {
             display: flex;
-
         }
         .list-header .sort-link-group div {
             margin-right: 20px;
         }
-
     </style>
 </head>
 
@@ -105,35 +97,35 @@
                 <li class="list-header">
                     <div class="count">총 학생 수: ${sList.size()}명</div>
                     <div class="sort-link-group">
-                        <div><a href="list?type=num">학번순</a></div>
-                        <div><a href="list?type=name">이름순</a></div>
-                        <div><a href="list?type=avg">평균순</a></div>
+                        <div><a href="/score/list?sort=num">학번순</a></div>
+                        <div><a href="/score/list?sort=name">이름순</a></div>
+                        <div><a href="/score/list?sort=avg">평균순</a></div>
                     </div>
 
                 </li>
 
                 <c:forEach var="s" items="${sList}">
                     <li>
-                        # 학번: ${s.stuNum}, 이름: <a href="/score/detail?stuNum=${s.stuNum}">${s.maskingName}</a>, 평균: ${s.average}점, 학점: ${s.grade}
+                        # 학번: ${s.stuNum}, 이름: <a href="/score/detail?stuNum=${s.stuNum}">${s.maskingName}</a>,
+                        평균: ${s.average}점, 학점: ${s.grade}
                         <a class="del-btn" href="/score/remove?stuNum=${s.stuNum}">삭제</a>
                     </li>
                 </c:forEach>
+
             </ul>
 
         </section>
+
 
 
     </div>
 
     <script>
         const $ul = document.querySelector('.score-list');
-
         $ul.addEventListener('click', e => {
             if (!e.target.matches('a.del-btn')) return;
-
-            e.preventDefault();  // 태그의 기본 기능을 막아둠
+            e.preventDefault(); // a태그 기본기능 정지
             //console.log('클릭이벤트 발동!');
-
             if (confirm('정말로 삭제하시겠습니까?')) {
                 //삭제 진행
                 window.location.href = e.target.getAttribute('href');
@@ -141,13 +133,11 @@
                 //삭제 취소
                 return;
             }
-
         });
-
         //홈화면으로 버튼 이벤트
         const $homeBtn = document.getElementById('go-home');
         $homeBtn.onclick = e => {
-            window.location.href = '/';     // GET 요청
+            window.location.href = '/'; // GET요청
         };
     </script>
 

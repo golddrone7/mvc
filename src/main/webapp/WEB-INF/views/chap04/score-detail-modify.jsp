@@ -14,20 +14,25 @@
     <!-- bootstrap css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
     <style>
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+        }
         li {
             list-style: none;
             margin: 0;
             padding: 0;
             font-size: 1.4em;
         }
-
         section.score-main {
             width: 30%;
             margin: 0 auto 150px;
@@ -37,7 +42,6 @@
             box-shadow: 2px 2px 5px orangered;
             transform: translateY(200px);
         }
-
         a.list-btn {
             display: block;
             width: fit-content;

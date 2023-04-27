@@ -1,84 +1,68 @@
 package com.spring.mvc.chap05.controller;
 
-import com.spring.mvc.chap05.dto.BoardDTO;
-import com.spring.mvc.chap05.entity.Board;
+import com.spring.mvc.chap05.dto.BoardListResponseDTO;
+import com.spring.mvc.chap05.dto.BoardWriteRequestDTO;
 import com.spring.mvc.chap05.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@Controller   // dispatcherServlet
-@RequiredArgsConstructor
+@Controller
+//@RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
+
     private final BoardService boardService;
 
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
+    }
 
-    /*
-     전체 게시판 조회 기능
-     /board/list : GET
-     */
+    // 목록 조회 요청
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(defaultValue = "numSort") String sort,@RequestParam(defaultValue = "")String searchTitle){
-        List<BoardDTO> boardList= boardService.boardFindAll(sort, searchTitle);
-        model.addAttribute("boardList", boardList);
+    public String list(Model model) {
+        System.out.println("/board/list : GET");
+        List<BoardListResponseDTO> responseDTOS
+                = boardService.getList();
+        model.addAttribute("bList", responseDTOS);
         return "chap05/list";
     }
 
-
-    /*
-     특정 게시판 삭제 기능
-     /board/delete : GET
-     */
-    @GetMapping("/delete")
-    public String delete(int boardNo){
-        boardService.delete(boardNo);
-        return "redirect:/board/list";
-    }
-
+    // 글쓰기 화면 조회 요청
     @GetMapping("/write")
-    public String wrtie(){
+    public String write() {
+        System.out.println("/board/write : GET");
         return "chap05/write";
     }
 
+    // 글 등록 요청 처리
     @PostMapping("/write")
-    public String save(String title, String content){
-        boardService.save(title, content);
+    public String write(BoardWriteRequestDTO dto) {
+        System.out.println("/board/write : POST");
+        boardService.register(dto);
         return "redirect:/board/list";
     }
 
+    // 글 삭제 요청 처리
+    @GetMapping("/delete")
+    public String delete(int bno) {
+        System.out.println("/board/delete : GET");
+        boardService.delete(bno);
+        return "redirect:/board/list";
+    }
+
+    // 글 상세 조회 요청
     @GetMapping("/detail")
-    public String detail(int boardNo, Model model){
-        Board board = boardService.detail(boardNo);
-        model.addAttribute("board", board);
+    public String detail(int bno, Model model) {
+        System.out.println("/board/detail : GET");
+        model.addAttribute("b", boardService.getDetail(bno));
         return "chap05/detail";
     }
-    @GetMapping("/back")
-    public String back(){
-        return "redirect:/board/list";
-    }
 
-
-    @GetMapping("/sort")
-    public String sort(String sort){
-        return "redirect:/board/list?sort="+sort;
-    }
-
-    @GetMapping("update")
-    public String update(int boardNo, Model model){
-        Board board = boardService.detail(boardNo);
-        model.addAttribute("board", board);
-        return "/chap05/update";
-    }
-    @PostMapping("update")
-    public String update(int boardNo,String title, String content){
-        boardService.update(boardNo, title, content);
-        return "redirect:/board/list";
-    }
 }
