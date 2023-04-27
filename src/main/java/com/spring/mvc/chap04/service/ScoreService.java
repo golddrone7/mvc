@@ -3,6 +3,7 @@ package com.spring.mvc.chap04.service;
 import com.spring.mvc.chap04.dto.ScoreListResponseDTO;
 import com.spring.mvc.chap04.dto.ScoreRequestDTO;
 import com.spring.mvc.chap04.entity.Score;
+import com.spring.mvc.chap04.repository.ScoreMapper;
 import com.spring.mvc.chap04.repository.ScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,11 +18,17 @@ import java.util.stream.Collectors;
 @Service
 public class ScoreService {
 
-    private final ScoreRepository scoreRepository;
+    private final ScoreMapper scoreRepository;
 
+//    private final ScoreRepository scoreRepository;
+
+//    @Autowired
+//    public ScoreService(@Qualifier("spring") ScoreRepository scoreRepository) {
+//        this.scoreRepository = scoreRepository;
+//    }
     @Autowired
-    public ScoreService(@Qualifier("spring") ScoreRepository scoreRepository) {
-        this.scoreRepository = scoreRepository;
+    public ScoreService(ScoreMapper scoreMapper) {
+        this.scoreRepository = scoreMapper;
     }
 
     // 목록조회 중간처리
