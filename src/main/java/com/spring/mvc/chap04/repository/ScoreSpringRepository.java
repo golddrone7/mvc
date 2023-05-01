@@ -36,7 +36,7 @@ public class ScoreSpringRepository implements ScoreRepository{
     @Override
     public boolean save(Score score) {
         String sql = "INSERT INTO tbl_score VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        int result = jdbcTemplate.update(sql, score.getName(), score.getKor(), score.getEng(), score.getMath(), score.getStuNum(),
+        int result = jdbcTemplate.update(sql, score.getStuName(), score.getKor(), score.getEng(), score.getMath(), score.getStuNum(),
                 score.getTotal(), score.getAverage(), String.valueOf(score.getGrade()));
         return result==1;
     }

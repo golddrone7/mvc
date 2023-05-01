@@ -114,6 +114,9 @@
         <label for="content">내용</label>
         <div id="content">${b.content}</div>
         <div class="buttons">
+            <button class="list-btn" type="button" onclick="window.location.href='/board/update?boardNo=${b.boardNo}'">수정</button>
+        </div>
+        <div class="buttons">
             <button class="list-btn" type="button" onclick="window.location.href='/board/list'">목록</button>
         </div>
 

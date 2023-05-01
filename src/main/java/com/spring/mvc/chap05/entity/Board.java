@@ -3,10 +3,17 @@ package com.spring.mvc.chap05.entity;
 import com.spring.mvc.chap05.dto.BoardWriteRequestDTO;
 import lombok.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+
+/*
+create table tbl_board (
+	board_no int(10) auto_increment primary key,
+	title VARCHAR(80) not null,
+	content VARCHAR(2000),
+	view_count int(10) default 0,
+	reg_date_time DATETIME default current_timestamp
+);
+ */
 
 @Setter @Getter
 @ToString @EqualsAndHashCode
@@ -31,13 +38,5 @@ public class Board {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.regDateTime = LocalDateTime.now();
-    }
-
-    public Board(ResultSet rs) throws SQLException {
-        this.boardNo = rs.getInt("board_no");
-        this.title = rs.getString("title");
-        this.content = rs.getString("content");
-        this.viewCount = rs.getInt("view_count");
-       this.regDateTime = rs.getTimestamp("reg_datetime").toLocalDateTime();
     }
 }

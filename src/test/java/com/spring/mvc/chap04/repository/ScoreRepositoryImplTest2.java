@@ -95,7 +95,7 @@ class ScoreRepositoryImplTest2 {
     void saveTest(){
         // given
         Score score = new Score();
-        score.setName("언년이");
+        score.setStuName("언년이");
         score.setKor(100);
         score.setMath(50);
         score.setEng(0);
