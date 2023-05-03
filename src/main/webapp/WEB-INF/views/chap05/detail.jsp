@@ -117,7 +117,7 @@
             <button class="list-btn" type="button" onclick="window.location.href='/board/update?boardNo=${b.boardNo}'">수정</button>
         </div>
         <div class="buttons">
-            <button class="list-btn" type="button" onclick="window.location.href='/board/list'">목록</button>
+            <button class="list-btn" type="button" onclick="window.location.href='/board/list?pageNo=${s.pageNo}&type=${s.type}&keyword=${s.keyword}'">목록</button>
         </div>
 
     </div>

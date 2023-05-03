@@ -3,6 +3,8 @@ package com.spring.mvc.chap05.service;
 import com.spring.mvc.chap05.dto.BoardDetailResponseDTO;
 import com.spring.mvc.chap05.dto.BoardListResponseDTO;
 import com.spring.mvc.chap05.dto.BoardWriteRequestDTO;
+import com.spring.mvc.chap05.dto.page.Page;
+import com.spring.mvc.chap05.dto.page.Search;
 import com.spring.mvc.chap05.entity.Board;
 import com.spring.mvc.chap05.repository.BoardMapper;
 import com.spring.mvc.chap05.repository.BoardRepository;
@@ -24,9 +26,9 @@ public class BoardService {
 
     // 중간처리 기능 자유롭게 사용
     // 목록 중간처리
-    public List<BoardListResponseDTO> getList() {
+    public List<BoardListResponseDTO> getList(Search page) {
 
-        return boardRepository.findAll()
+        return boardRepository.findAll(page)
                 .stream()
                 .map(BoardListResponseDTO::new)
                 .collect(toList())
@@ -53,5 +55,9 @@ public class BoardService {
     }
     public void update(Board board) {
         boardRepository.update(board);
+    }
+
+    public int getCount(Search search) {
+        return boardRepository.count(search);
     }
 }

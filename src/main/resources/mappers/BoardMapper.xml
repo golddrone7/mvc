@@ -7,7 +7,18 @@
         SELECT
             board_no, title, content, view_count, reg_date_time
         FROM tbl_board
+        <if test="type == 'title'">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'content'">
+            WHERE content LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'tc'">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+                OR content LIKE CONCAT('%', #{keyword}, '%'}
+        </if>
         ORDER BY board_no DESC
+        LIMIT #{pageStart}, #{amount}
     </select>
 
 
@@ -42,4 +53,19 @@
             content = #{content}
         where board_no = #{boardNo}
     </update>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_board
+        <if test="type == 'title'">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'content'">
+            WHERE content LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="type == 'tc'">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%')
+            OR content LIKE CONCAT('%', #{keyword}, '%'}
+        </if>
+    </select>
 </mapper>
