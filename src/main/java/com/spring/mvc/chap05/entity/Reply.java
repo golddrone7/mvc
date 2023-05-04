@@ -15,6 +15,7 @@ create table tbl_reply(
 );
  */
 
+import com.spring.mvc.chap05.dto.ReplyPostRequestDTO;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -31,4 +32,6 @@ public class Reply {
     private String replyWriter;
     private LocalDateTime replyDate;
     private long boardNo;
+
+
 }
